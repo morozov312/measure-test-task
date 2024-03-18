@@ -1,8 +1,8 @@
+// eslint-disable-next-line import/no-internal-modules
+import { HomePage } from '@/pages-flat/home-page';
 
-export default function Home() {
-  return (
-    <main className="">
+const Home = () => {
+  return <HomePage />;
+};
 
-    </main>
-  );
-}
+export default Home;
