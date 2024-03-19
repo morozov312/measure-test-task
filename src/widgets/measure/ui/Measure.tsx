@@ -1,4 +1,6 @@
 'use client';
+import clsx from 'clsx';
+import throttle from 'lodash.throttle';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
@@ -7,7 +9,6 @@ import {
   MAX_SEGMENT_WIDTH,
   MIN_SEGMENT_WIDTH,
 } from './constants';
-import throttle from 'lodash.throttle';
 
 const SEGMENTS = Array(COUNT_SEGMENTS)
   .fill(null)
@@ -62,12 +63,14 @@ const Measure = () => {
     }
   };
 
+  console.log(scroll);
+
   return (
     <div
       onWheel={horizontalScroll}
       className='flex w-5/6 flex-col items-start overflow-x-scroll bg-[#333333] p-4 text-white'
     >
-      <div className='flex min-w-full justify-center relative'>
+      <div className='relative flex min-w-full justify-center'>
         {SEGMENTS.map((segment) => (
           <div
             key={segment.id}
@@ -75,12 +78,22 @@ const Measure = () => {
             className='flex items-end justify-between border-l-2 border-[#d3d3d3] px-1'
           >
             <span className='px-1 text-sm'>{segment.id + 1}</span>
-            <div className='flex w-full justify-between'>
-              {SUBSEGMENTS.map((subsegment) => (
+            <div className='flex w-full justify-between items-end'>
+              {SUBSEGMENTS.map((subsegment, index) => (
                 <div
                   key={segment.id.toString() + subsegment.id.toString()}
-                  className='h-2 w-[2px] bg-[#d3d3d3]'
-                ></div>
+                  className={clsx('h-2 w-[2px] bg-[#d3d3d3] flex items-end ', {
+                    'h-4': (index + 1) % 10 === 0,
+                  })}
+                >
+                  {(index + 1) % 10 === 0 && (
+                    <span className='px-1 text-sm'>
+                      {segment.id +
+                        1 +
+                        Number((10 / currentCountSubsegments).toFixed(1))}
+                    </span>
+                  )}
+                </div>
               ))}
             </div>
           </div>
