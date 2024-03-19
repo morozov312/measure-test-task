@@ -1,5 +1,5 @@
 'use client';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import throttle from 'lodash.throttle';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -78,11 +78,11 @@ const Measure = () => {
             className='flex items-end justify-between border-l-2 border-[#d3d3d3] px-1'
           >
             <span className='px-1 text-sm'>{segment.id + 1}</span>
-            <div className='flex w-full justify-between items-end'>
+            <div className='flex w-full items-end justify-between'>
               {SUBSEGMENTS.map((subsegment, index) => (
                 <div
                   key={segment.id.toString() + subsegment.id.toString()}
-                  className={clsx('h-2 w-[2px] bg-[#d3d3d3] flex items-end ', {
+                  className={clsx('flex h-2 w-[2px] items-end bg-[#d3d3d3] ', {
                     'h-4': (index + 1) % 10 === 0,
                   })}
                 >
