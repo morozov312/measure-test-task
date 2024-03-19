@@ -52,27 +52,29 @@ const Measure = () => {
   );
 
   const horizontalScroll = (e: React.WheelEvent<HTMLDivElement>) => {
-    const currentState = scroll + e.deltaY;
-    throttleSetScroll(
-      currentState < MIN_SEGMENT_WIDTH || currentState > MAX_SEGMENT_WIDTH
-        ? scroll
-        : currentState,
-    );
+    if (e.ctrlKey) {
+      const currentState = scroll + e.deltaY;
+      throttleSetScroll(
+        currentState < MIN_SEGMENT_WIDTH || currentState > MAX_SEGMENT_WIDTH
+          ? scroll
+          : currentState,
+      );
+    }
   };
 
   return (
     <div
       onWheel={horizontalScroll}
-      className='flex w-5/6 flex-col items-center overflow-hidden bg-[#333333] p-4 text-white'
+      className='flex w-5/6 flex-col items-start overflow-x-scroll bg-[#333333] p-4 text-white'
     >
-      <div className='flex min-w-full justify-center'>
+      <div className='flex min-w-full justify-center relative'>
         {SEGMENTS.map((segment) => (
           <div
             key={segment.id}
             style={{ width: scroll }}
             className='flex items-end justify-between border-l-2 border-[#d3d3d3] px-1'
           >
-            <span className='px-1 text-sm'>{segment.id}</span>
+            <span className='px-1 text-sm'>{segment.id + 1}</span>
             <div className='flex w-full justify-between'>
               {SUBSEGMENTS.map((subsegment) => (
                 <div
@@ -83,8 +85,8 @@ const Measure = () => {
             </div>
           </div>
         ))}
+        <div className='absolute bottom-0 h-[2px] w-full bg-[#d3d3d3]' />
       </div>
-      <div className='h-[2px] w-[110%] bg-[#d3d3d3]' />
     </div>
   );
 };
