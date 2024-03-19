@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import {
   COUNT_SEGMENTS,
@@ -7,9 +7,7 @@ import {
   MAX_SEGMENT_WIDTH,
   MIN_SEGMENT_WIDTH,
 } from './constants';
-// import debounce from 'lodash.debounce';
 import throttle from 'lodash.throttle';
-import { debounce } from 'next/dist/server/utils';
 
 const SEGMENTS = Array(COUNT_SEGMENTS)
   .fill(null)
@@ -17,14 +15,34 @@ const SEGMENTS = Array(COUNT_SEGMENTS)
     id,
   }));
 
-const SUBSEGMENTS = Array(COUNT_SUBSEGMENTS)
-  .fill(null)
-  .map((_, id: number) => ({
-    id,
-  }));
-
 const Measure = () => {
   const [scroll, setScroll] = useState<number>(MIN_SEGMENT_WIDTH);
+  const [currentCountSubsegments, setCurrentCountSubsegments] =
+    useState<number>(COUNT_SUBSEGMENTS);
+
+  const throttleSetCountOfSegments = useCallback(
+    throttle((value: number) => {
+      setCurrentCountSubsegments(value);
+    }, 100),
+    [],
+  );
+
+  useEffect(() => {
+    const hundreds = Math.ceil(scroll / 100);
+    if (COUNT_SUBSEGMENTS * hundreds !== currentCountSubsegments) {
+      throttleSetCountOfSegments(COUNT_SUBSEGMENTS * hundreds);
+    }
+  }, [scroll]);
+
+  const SUBSEGMENTS = useMemo(
+    () =>
+      Array(currentCountSubsegments)
+        .fill(null)
+        .map((_, id: number) => ({
+          id,
+        })),
+    [currentCountSubsegments],
+  );
 
   const throttleSetScroll = useCallback(
     throttle((value: number) => {
