@@ -1,25 +1,45 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
-const COUNT_OF_SEGMENTS = 15;
-const SEGMENTS = Array(COUNT_OF_SEGMENTS)
+import {
+  COUNT_SEGMENTS,
+  COUNT_SUBSEGMENTS,
+  MAX_SEGMENT_WIDTH,
+  MIN_SEGMENT_WIDTH,
+} from './constants';
+// import debounce from 'lodash.debounce';
+import throttle from 'lodash.throttle';
+import { debounce } from 'next/dist/server/utils';
+
+const SEGMENTS = Array(COUNT_SEGMENTS)
   .fill(null)
   .map((_, id: number) => ({
     id,
   }));
 
-const COUNT_PER_SEGMENT = 3;
-const SUBSEGMENTS = Array(COUNT_PER_SEGMENT)
+const SUBSEGMENTS = Array(COUNT_SUBSEGMENTS)
   .fill(null)
   .map((_, id: number) => ({
     id,
   }));
 
 const Measure = () => {
-  const [scroll, setScroll] = useState<number>(0);
+  const [scroll, setScroll] = useState<number>(MIN_SEGMENT_WIDTH);
+
+  const throttleSetScroll = useCallback(
+    throttle((value: number) => {
+      setScroll(value);
+    }, 20),
+    [],
+  );
 
   const horizontalScroll = (e: React.WheelEvent<HTMLDivElement>) => {
-    setScroll((prevState) => prevState + e.deltaY);
+    const currentState = scroll + e.deltaY;
+    throttleSetScroll(
+      currentState < MIN_SEGMENT_WIDTH || currentState > MAX_SEGMENT_WIDTH
+        ? scroll
+        : currentState,
+    );
   };
 
   return (
@@ -31,7 +51,7 @@ const Measure = () => {
         {SEGMENTS.map((segment) => (
           <div
             key={segment.id}
-            style={{ width: 100 + scroll / 10 }}
+            style={{ width: scroll }}
             className='flex items-end justify-between border-l-2 border-[#d3d3d3] px-1'
           >
             <span className='px-1 text-sm'>{segment.id}</span>
