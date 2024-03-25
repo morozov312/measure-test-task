@@ -65,9 +65,9 @@ const Measure = () => {
   );
 
   const horizontalScroll = (e: WheelEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
     if (e.ctrlKey) {
+      e.preventDefault();
+      e.stopPropagation();
       const sign = e.deltaY >= 0 ? -1 : 1;
       const newValue = scroll + 10 * -sign;
       throttleSetScroll(
@@ -87,16 +87,17 @@ const Measure = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scroll]);
 
-  console.log('sdssd', scroll);
-
   return (
-    <div ref={ref} className='flex gap-3'>
+    <div className='flex gap-3'>
       <div className='w-1/5 text-white text-center mt-12 cursor-pointer'>
         <span onClick={() => setCountOfTracks((prevState) => prevState + 1)}>
           Add new track +
         </span>
       </div>
-      <div className='flex w-full flex-col items-start overflow-x-scroll bg-[#333333] p-4 text-white'>
+      <div
+        ref={ref}
+        className='flex w-full flex-col items-start overflow-x-scroll bg-[#333333] p-4 text-white'
+      >
         <div className='relative flex min-w-full justify-center'>
           {SEGMENTS.filter(
             ({ id }) => id % Math.floor(MAX_SEGMENT_WIDTH / scroll) === 0,
@@ -113,7 +114,7 @@ const Measure = () => {
                     <div
                       key={segment.id.toString() + subsegment.id.toString()}
                       className={clsx(
-                        'flex h-2 w-[2px] items-end bg-[#d3d3d3] ',
+                        'flex h-2 w-[1px] items-end bg-[#d3d3d3] ',
                       )}
                     ></div>
                   ))}
@@ -123,22 +124,22 @@ const Measure = () => {
           ))}
           <div className='absolute bottom-0 h-[2px] w-full bg-[#d3d3d3]' />
         </div>
-        <div className='flex flex-col overflow-x-scroll text-white flex-wrap'>
+        <div className='flex flex-col  text-white flex-wrap w-full'>
           {TRACKS.map(({ id }) => (
-            <div key={id} className='flex overflow-x-scroll'>
+            <div key={id} className='flex'>
               {SEGMENTS.filter(
                 ({ id }) => id % Math.floor(MAX_SEGMENT_WIDTH / scroll) === 0,
               ).map((segment) => (
                 <div
                   key={segment.id}
                   style={{ width: scroll }}
-                  className='h-16 w-full overflow-x-scroll flex  justify-between border-[0.5px] border-[#A19E9EFF] px-1 border-collapse'
+                  className='h-16 w-full flex justify-between border-x-[1px] border-b-[1px] border-[#A19E9EFF] px-1 border-collapse'
                 >
-                  <span className='px-1 text-sm text-[#333333]'>
+                  <span className='px-[3.5px] text-sm text-[#333333]'>
                     {segment.id + 1}
                   </span>
                   {scroll > 150 && (
-                    <div className='w-full h-full flex justify-between ml-[2px] pr-1'>
+                    <div className='w-full h-full flex justify-between ml-[2px] pr-[3px]'>
                       {SUBSEGMENTS.map((subsegment) => (
                         <div
                           key={segment.id.toString() + subsegment.id.toString()}
