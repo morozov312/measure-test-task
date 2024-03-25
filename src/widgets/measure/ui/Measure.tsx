@@ -1,7 +1,13 @@
 'use client';
 import { clsx } from 'clsx';
 import throttle from 'lodash.throttle';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import {
   COUNT_SEGMENTS,
@@ -21,6 +27,7 @@ const Measure = () => {
   const [currentCountSubsegments, setCurrentCountSubsegments] =
     useState<number>(COUNT_SUBSEGMENTS);
   const [countOfTracks, setCountOfTracks] = useState<number>(0);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   const throttleSetCountOfSegments = useCallback(
     throttle((value: number) => {
@@ -63,16 +70,28 @@ const Measure = () => {
     [],
   );
 
-  const horizontalScroll = (e: React.WheelEvent<HTMLDivElement>) => {
+  const horizontalScroll = (e: WheelEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     if (e.ctrlKey) {
-      const currentState = scroll + e.deltaY;
+      const sign = e.deltaY >= 0 ? -1 : 1;
+      const newValue = scroll + 10 * -sign;
       throttleSetScroll(
-        currentState < MIN_SEGMENT_WIDTH || currentState > MAX_SEGMENT_WIDTH
+        newValue < MIN_SEGMENT_WIDTH || newValue > MAX_SEGMENT_WIDTH
           ? scroll
-          : currentState,
+          : newValue,
       );
     }
   };
+
+  useEffect(() => {
+    const element = ref.current;
+    if (element) {
+      element.addEventListener('wheel', horizontalScroll, { passive: false });
+    }
+    return () => element?.removeEventListener('wheel', horizontalScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scroll]);
 
   return (
     <div className='flex gap-3'>
@@ -81,11 +100,8 @@ const Measure = () => {
           Add new track +
         </span>
       </div>
-      <div
-        onWheel={horizontalScroll}
-        className='flex w-full flex-col items-start overflow-x-scroll bg-[#333333] p-4 text-white'
-      >
-        <div className='relative flex min-w-full justify-center'>
+      <div className='flex w-full flex-col items-start overflow-x-scroll bg-[#333333] p-4 text-white'>
+        <div ref={ref} className='relative flex min-w-full justify-center'>
           {SEGMENTS.filter(({ id }) => id % 4 === 0).map((segment) => (
             <div
               key={segment.id}
