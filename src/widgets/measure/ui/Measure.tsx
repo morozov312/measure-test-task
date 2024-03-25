@@ -105,7 +105,7 @@ const Measure = () => {
             <div
               key={segment.id}
               style={{ width: scroll }}
-              className='flex items-end justify-between border-l-2 border-[#d3d3d3] px-1'
+              className='flex items-end justify-between border-l-[1px] border-[#d3d3d3] px-1'
             >
               <span className='px-1 text-sm'>{segment.id + 1}</span>
               {scroll > 100 && (
