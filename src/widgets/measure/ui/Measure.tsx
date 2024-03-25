@@ -135,7 +135,7 @@ const Measure = () => {
                   style={{ width: scroll }}
                   className='h-16 w-full flex justify-between border-x-[1px] border-b-[1px] border-[#A19E9EFF] px-1 border-collapse'
                 >
-                  <span className='px-[3.5px] text-sm text-[#333333]'>
+                  <span className='px-[3px] text-sm text-[#333333]'>
                     {segment.id + 1}
                   </span>
                   {scroll > 150 && (
