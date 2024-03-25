@@ -88,14 +88,14 @@ const Measure = () => {
   }, [scroll]);
 
   return (
-    <div className='flex gap-3'>
+    <div ref={ref} className='flex gap-3'>
       <div className='w-1/5 text-white text-center mt-12 cursor-pointer'>
         <span onClick={() => setCountOfTracks((prevState) => prevState + 1)}>
           Add new track +
         </span>
       </div>
       <div className='flex w-full flex-col items-start overflow-x-scroll bg-[#333333] p-4 text-white'>
-        <div ref={ref} className='relative flex min-w-full justify-center'>
+        <div className='relative flex min-w-full justify-center'>
           {SEGMENTS.filter(({ id }) => id % 4 === 0).map((segment) => (
             <div
               key={segment.id}
