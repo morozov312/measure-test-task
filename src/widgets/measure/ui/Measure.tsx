@@ -87,6 +87,8 @@ const Measure = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scroll]);
 
+  console.log('sdssd', scroll);
+
   return (
     <div ref={ref} className='flex gap-3'>
       <div className='w-1/5 text-white text-center mt-12 cursor-pointer'>
@@ -96,47 +98,58 @@ const Measure = () => {
       </div>
       <div className='flex w-full flex-col items-start overflow-x-scroll bg-[#333333] p-4 text-white'>
         <div className='relative flex min-w-full justify-center'>
-          {SEGMENTS.filter(({ id }) => id % 4 === 0).map((segment) => (
+          {SEGMENTS.filter(
+            ({ id }) => id % Math.floor(MAX_SEGMENT_WIDTH / scroll) === 0,
+          ).map((segment) => (
             <div
               key={segment.id}
               style={{ width: scroll }}
               className='flex items-end justify-between border-l-2 border-[#d3d3d3] px-1'
             >
               <span className='px-1 text-sm'>{segment.id + 1}</span>
-              <div className='flex w-full items-end justify-between'>
-                {SUBSEGMENTS.map((subsegment, index) => (
-                  <div
-                    key={segment.id.toString() + subsegment.id.toString()}
-                    className={clsx(
-                      'flex h-2 w-[2px] items-end bg-[#d3d3d3] ',
-                      {
-                        'h-4': (index + 1) % 10 === 0,
-                      },
-                    )}
-                  >
-                    {(index + 1) % 10 === 0 && (
-                      <span className='px-1 text-sm'>
-                        {segment.id +
-                          1 +
-                          Number((10 / currentCountSubsegments).toFixed(1))}
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
+              {scroll > 100 && (
+                <div className='flex w-full items-end justify-between pr-1'>
+                  {SUBSEGMENTS.map((subsegment) => (
+                    <div
+                      key={segment.id.toString() + subsegment.id.toString()}
+                      className={clsx(
+                        'flex h-2 w-[2px] items-end bg-[#d3d3d3] ',
+                      )}
+                    ></div>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
           <div className='absolute bottom-0 h-[2px] w-full bg-[#d3d3d3]' />
         </div>
         <div className='flex flex-col overflow-x-scroll text-white flex-wrap'>
           {TRACKS.map(({ id }) => (
-            <div key={id} className='flex'>
-              {SEGMENTS.filter(({ id }) => id % 4 === 0).map((segment) => (
+            <div key={id} className='flex overflow-x-scroll'>
+              {SEGMENTS.filter(
+                ({ id }) => id % Math.floor(MAX_SEGMENT_WIDTH / scroll) === 0,
+              ).map((segment) => (
                 <div
                   key={segment.id}
                   style={{ width: scroll }}
-                  className='h-10 flex  items-end justify-between border-[0.5px] border-[#A19E9EFF] px-1 border-collapse'
-                ></div>
+                  className='h-16 w-full overflow-x-scroll flex  justify-between border-[0.5px] border-[#A19E9EFF] px-1 border-collapse'
+                >
+                  <span className='px-1 text-sm text-[#333333]'>
+                    {segment.id + 1}
+                  </span>
+                  {scroll > 150 && (
+                    <div className='w-full h-full flex justify-between ml-[2px] pr-1'>
+                      {SUBSEGMENTS.map((subsegment) => (
+                        <div
+                          key={segment.id.toString() + subsegment.id.toString()}
+                          className={clsx(
+                            'flex h-full w-[1px] items-end bg-[#d3d3d3] ',
+                          )}
+                        ></div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           ))}
