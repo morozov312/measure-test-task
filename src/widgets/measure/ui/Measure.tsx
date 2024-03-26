@@ -9,7 +9,7 @@ import {
   MAX_SEGMENT_WIDTH,
   MIN_SEGMENT_WIDTH,
 } from './constants';
-import { getOffset } from '@/widgets/measure/ui/getOffset';
+import { getOffset } from './getOffset';
 
 const SEGMENTS = Array(COUNT_SEGMENTS)
   .fill(null)
@@ -112,13 +112,11 @@ const Measure = () => {
                   : segment.id + 1 + index * getOffset(scroll)}
               </span>
               {scroll > 100 && (
-                <div className='flex w-full items-end justify-between pr-1 overflow-hidden'>
+                <div className='flex w-full items-end justify-between overflow-hidden pr-1'>
                   {SUBSEGMENTS.map((subsegment) => (
                     <div
                       key={segment.id.toString() + subsegment.id.toString()}
-                      className={clsx(
-                        'flex h-2 w-[1px] items-end bg-[#d3d3d3] ',
-                      )}
+                      className={clsx('flex h-2 w-px items-end bg-[#d3d3d3] ')}
                     ></div>
                   ))}
                 </div>
@@ -127,14 +125,14 @@ const Measure = () => {
           ))}
           <div className='absolute bottom-0 h-[2px] w-full bg-[#d3d3d3]' />
         </div>
-        <div className={'w-full flex flex-col flex-wrap text-white'}>
+        <div className='flex w-full flex-col flex-wrap text-white'>
           {TRACKS.map(({ id }) => (
             <div key={id} className='flex'>
               {SEGMENTS.map((segment, index) => (
                 <div
                   key={segment.id}
                   style={{ width: scroll }}
-                  className='flex h-16 w-full border-collapse justify-between border-l-[1px] border-b-[1px] border-[#A19E9EFF] pl-1 pr-[5px]'
+                  className='flex h-16 w-full border-collapse justify-between border-b-[1px] border-l-[1px] border-[#A19E9EFF] pl-1 pr-[5px]'
                 >
                   <span className='px-[3px] text-sm text-[#333333]'>
                     {index === 0
