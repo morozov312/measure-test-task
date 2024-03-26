@@ -89,33 +89,36 @@ const Measure = () => {
 
   return (
     <div className='flex gap-3'>
-      <div className='w-1/5 text-white text-center mt-12 cursor-pointer'>
+      <div className='mt-12 w-1/5 cursor-pointer text-center text-white'>
         <span onClick={() => setCountOfTracks((prevState) => prevState + 1)}>
-          Add new track +
+          {'Add new track +'}
         </span>
       </div>
       <div
         ref={ref}
         className='flex w-full flex-col items-start overflow-x-scroll bg-[#333333] p-4 text-white'
       >
-        <div className='relative flex min-w-full justify-center'>
+        <div className='relative flex min-w-full justify-center '>
           {SEGMENTS.filter(
             ({ id }) => id % Math.floor(MAX_SEGMENT_WIDTH / scroll) === 0,
           ).map((segment) => (
             <div
               key={segment.id}
               style={{ width: scroll }}
-              className='flex items-end justify-between border-l-[1px] border-[#d3d3d3] px-1'
+              className='flex h-full items-end justify-between border-l-DEFAULT border-[#d3d3d3] px-1 '
             >
-              <span className='px-1 text-sm'>{segment.id + 1}</span>
+              <span className='px-1 text-sm'>
+                {scroll > 100
+                  ? ((segment.id + 1) * (scroll / 10)).toFixed(1)
+                  : segment.id + 1}
+                {/*{segment.id + 1}*/}
+              </span>
               {scroll > 100 && (
                 <div className='flex w-full items-end justify-between pr-1'>
                   {SUBSEGMENTS.map((subsegment) => (
                     <div
                       key={segment.id.toString() + subsegment.id.toString()}
-                      className={clsx(
-                        'flex h-2 w-[1px] items-end bg-[#d3d3d3] ',
-                      )}
+                      className={clsx('flex h-2 w-px items-end bg-[#d3d3d3] ')}
                     ></div>
                   ))}
                 </div>
@@ -124,7 +127,7 @@ const Measure = () => {
           ))}
           <div className='absolute bottom-0 h-[2px] w-full bg-[#d3d3d3]' />
         </div>
-        <div className='flex flex-col  text-white flex-wrap w-full'>
+        <div className={"w-full'> flex flex-col flex-wrap text-white"}>
           {TRACKS.map(({ id }) => (
             <div key={id} className='flex'>
               {SEGMENTS.filter(
@@ -133,18 +136,18 @@ const Measure = () => {
                 <div
                   key={segment.id}
                   style={{ width: scroll }}
-                  className='h-16 w-full flex justify-between border-x-[1px] border-b-[1px] border-[#A19E9EFF] px-1 border-collapse'
+                  className='flex h-16 w-full border-collapse justify-between border-x-DEFAULT border-b-DEFAULT border-[#A19E9EFF] px-1'
                 >
                   <span className='px-[3px] text-sm text-[#333333]'>
                     {segment.id + 1}
                   </span>
                   {scroll > 150 && (
-                    <div className='w-full h-full flex justify-between ml-[2px] pr-[3px]'>
+                    <div className='ml-[2px] flex size-full justify-between pr-[3px]'>
                       {SUBSEGMENTS.map((subsegment) => (
                         <div
                           key={segment.id.toString() + subsegment.id.toString()}
                           className={clsx(
-                            'flex h-full w-[1px] items-end bg-[#d3d3d3] ',
+                            'flex h-full w-px items-end bg-[#d3d3d3] ',
                           )}
                         ></div>
                       ))}

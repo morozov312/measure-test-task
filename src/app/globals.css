@@ -8,9 +8,18 @@
   --background-end-rgb: 255, 255, 255;
 }
 
-*::-webkit-scrollbar {
-  color: #a19e9e;
-  display: none;
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  color: white;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: white;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 8px;
 }
 
 @media (prefers-color-scheme: dark) {
