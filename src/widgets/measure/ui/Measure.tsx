@@ -9,6 +9,7 @@ import {
   MAX_SEGMENT_WIDTH,
   MIN_SEGMENT_WIDTH,
 } from './constants';
+import { getOffset } from '@/widgets/measure/ui/getOffset';
 
 const SEGMENTS = Array(COUNT_SEGMENTS)
   .fill(null)
@@ -99,49 +100,46 @@ const Measure = () => {
         className='flex w-full flex-col items-start overflow-x-scroll bg-[#333333] p-4 text-white'
       >
         <div className='relative flex min-w-full justify-center '>
-          {SEGMENTS.filter(
-            ({ id }) => id % Math.floor(MAX_SEGMENT_WIDTH / scroll) === 0,
-          ).map((segment) => (
+          {SEGMENTS.map((segment, index) => (
             <div
               key={segment.id}
               style={{ width: scroll }}
               className='flex h-full items-end justify-between border-l-[1px] border-l-[#d3d3d3] px-1 '
             >
               <span className='px-1 text-sm'>
-                {scroll > 100
-                  ? ((segment.id + 1) * (scroll / 10)).toFixed(1)
-                  : segment.id + 1}
-                {/*{segment.id + 1}*/}
+                {index === 0
+                  ? segment.id + 1
+                  : segment.id + 1 + index * getOffset(scroll)}
               </span>
               {scroll > 100 && (
-                <div className='flex w-full items-end justify-between pr-1'>
+                <div className='flex w-full items-end justify-between pr-1 overflow-hidden'>
                   {SUBSEGMENTS.map((subsegment) => (
                     <div
                       key={segment.id.toString() + subsegment.id.toString()}
-                      className={clsx('flex h-2 w-px items-end bg-[#d3d3d3] ')}
+                      className={clsx(
+                        'flex h-2 w-[1px] items-end bg-[#d3d3d3] ',
+                      )}
                     ></div>
                   ))}
                 </div>
               )}
             </div>
           ))}
-          <div className='absolute bottom-0  h-[2px] w-full bg-[#d3d3d3]' />
+          <div className='absolute bottom-0 h-[2px] w-full bg-[#d3d3d3]' />
         </div>
         <div className={'w-full flex flex-col flex-wrap text-white'}>
           {TRACKS.map(({ id }) => (
             <div key={id} className='flex'>
-              {SEGMENTS.filter(
-                ({ id }) => id % Math.floor(MAX_SEGMENT_WIDTH / scroll) === 0,
-              ).map((segment) => (
+              {SEGMENTS.map((segment, index) => (
                 <div
                   key={segment.id}
                   style={{ width: scroll }}
-                  className='flex h-16 w-full border-collapse justify-between border-x-[1px] border-b-[1px] border-[#A19E9EFF] px-1'
+                  className='flex h-16 w-full border-collapse justify-between border-l-[1px] border-b-[1px] border-[#A19E9EFF] pl-1 pr-[5px]'
                 >
                   <span className='px-[3px] text-sm text-[#333333]'>
-                    {scroll > 100
-                      ? ((segment.id + 1) * (scroll / 10)).toFixed(1)
-                      : segment.id + 1}
+                    {index === 0
+                      ? segment.id + 1
+                      : segment.id + 1 + index * getOffset(scroll)}
                   </span>
                   {scroll > 150 && (
                     <div className='ml-[2px] flex size-full justify-between pr-[3px]'>
