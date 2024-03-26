@@ -105,7 +105,7 @@ const Measure = () => {
             <div
               key={segment.id}
               style={{ width: scroll }}
-              className='flex h-full items-end justify-between border-l-DEFAULT border-[#d3d3d3] px-1 '
+              className='flex h-full items-end justify-between border-l-[1px] border-l-[#d3d3d3] px-1 '
             >
               <span className='px-1 text-sm'>
                 {scroll > 100
@@ -125,9 +125,9 @@ const Measure = () => {
               )}
             </div>
           ))}
-          <div className='absolute bottom-0 h-[2px] w-full bg-[#d3d3d3]' />
+          <div className='absolute bottom-0  h-[2px] w-full bg-[#d3d3d3]' />
         </div>
-        <div className={"w-full'> flex flex-col flex-wrap text-white"}>
+        <div className={'w-full flex flex-col flex-wrap text-white'}>
           {TRACKS.map(({ id }) => (
             <div key={id} className='flex'>
               {SEGMENTS.filter(
@@ -136,10 +136,12 @@ const Measure = () => {
                 <div
                   key={segment.id}
                   style={{ width: scroll }}
-                  className='flex h-16 w-full border-collapse justify-between border-x-DEFAULT border-b-DEFAULT border-[#A19E9EFF] px-1'
+                  className='flex h-16 w-full border-collapse justify-between border-x-[1px] border-b-[1px] border-[#A19E9EFF] px-1'
                 >
                   <span className='px-[3px] text-sm text-[#333333]'>
-                    {segment.id + 1}
+                    {scroll > 100
+                      ? ((segment.id + 1) * (scroll / 10)).toFixed(1)
+                      : segment.id + 1}
                   </span>
                   {scroll > 150 && (
                     <div className='ml-[2px] flex size-full justify-between pr-[3px]'>
