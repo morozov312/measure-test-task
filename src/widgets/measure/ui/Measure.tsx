@@ -146,9 +146,7 @@ const Measure = () => {
                       {SUBSEGMENTS.map((subsegment) => (
                         <div
                           key={segment.id.toString() + subsegment.id.toString()}
-                          className={clsx(
-                            'flex h-full w-px items-end bg-[#d3d3d3]',
-                          )}
+                          className='flex h-full w-[1px] items-end bg-[#d3d3d3]'
                         ></div>
                       ))}
                     </div>
