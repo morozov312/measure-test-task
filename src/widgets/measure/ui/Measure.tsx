@@ -116,7 +116,9 @@ const Measure = () => {
                   {SUBSEGMENTS.map((subsegment) => (
                     <div
                       key={segment.id.toString() + subsegment.id.toString()}
-                      className={clsx('flex h-2 w-px items-end bg-[#d3d3d3] ')}
+                      className={clsx(
+                        'flex h-2 w-[1px] items-end bg-[#d3d3d3] ',
+                      )}
                     ></div>
                   ))}
                 </div>
@@ -132,7 +134,7 @@ const Measure = () => {
                 <div
                   key={segment.id}
                   style={{ width: scroll }}
-                  className='flex h-16 w-full border-collapse justify-between border-b-[1px] border-l-[1px] border-[#A19E9EFF] pl-1 pr-[5px]'
+                  className='flex h-16 w-full  justify-between border-b-[1px] border-l-[1px] border-[#d3d3d3] pl-1 pr-[5px]'
                 >
                   <span className='px-[3px] text-sm text-[#333333]'>
                     {index === 0
@@ -145,7 +147,7 @@ const Measure = () => {
                         <div
                           key={segment.id.toString() + subsegment.id.toString()}
                           className={clsx(
-                            'flex h-full w-px items-end bg-[#d3d3d3] ',
+                            'flex h-full w-px items-end bg-[#d3d3d3]',
                           )}
                         ></div>
                       ))}
